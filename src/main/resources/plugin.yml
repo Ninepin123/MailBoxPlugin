@@ -1,0 +1,27 @@
+name: MailboxSystem
+version: 1.0
+main: me.ninepin.mailBoxPlugin.MailboxPlugin
+api-version: 1.16
+description: 一個提供信箱功能的插件
+author: YourName
+
+commands:
+  mail:
+    description: 信箱系統主命令
+    usage: /mail [box|all|give|help]
+    aliases: [ mailbox ]
+    permission: mailbox.use
+
+permissions:
+  mailbox.use:
+    description: 允許使用基本信箱功能
+    default: true
+  mailbox.admin:
+    description: 允許使用管理員功能
+    default: op
+  mailbox.check:
+    description: 允許查看其他玩家的信箱
+    default: op
+  mailbox.admin.manage:
+    description: 允許管理員刪除信箱中的物品
+    default: false
