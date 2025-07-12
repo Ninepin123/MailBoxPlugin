@@ -17,6 +17,7 @@ public class MailboxPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // 初始化管理器
+        saveDefaultConfig();
         mailboxManager = new MailboxManager(this);
 
         // 注册事件监听器

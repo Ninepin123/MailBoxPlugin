@@ -1,5 +1,9 @@
 package me.ninepin.mailBoxPlugin.listener;
 
+import me.ninepin.mailBoxPlugin.enums.MailboxType;
+import me.ninepin.mailBoxPlugin.manager.MailboxManager;
+import me.ninepin.mailBoxPlugin.model.MailItem;
+import me.ninepin.mailBoxPlugin.utils.MailboxUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -9,13 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import me.ninepin.mailBoxPlugin.manager.MailboxManager;
-import me.ninepin.mailBoxPlugin.model.MailItem;
-import me.ninepin.mailBoxPlugin.enums.MailboxType;
-import me.ninepin.mailBoxPlugin.utils.MailboxUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +29,7 @@ public class MailboxListener implements Listener {
 
     /**
      * 构造函数
+     *
      * @param mailboxManager 信箱管理器
      */
     public MailboxListener(MailboxManager mailboxManager) {
@@ -50,8 +50,9 @@ public class MailboxListener implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    event.getPlayer().sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.YELLOW +
-                            "您有 " + unreadCount + " 封未读邮件! 使用 /mail box 查看您的信箱。");
+                    event.getPlayer().sendMessage(ChatColor.GOLD + "[信箱系統] " + ChatColor.YELLOW +
+                            "您有 " + unreadCount + " 封未讀郵件! 使用 /mail box 查看您的信箱。"
+                    );
                 }
             }.runTaskLater(mailboxManager.getPlugin(), 40L); // 延迟2秒通知玩家
         }
@@ -105,7 +106,7 @@ public class MailboxListener implements Listener {
                         if (MailboxUtils.hasInventorySpace(player.getInventory(), item)) {
                             player.getInventory().addItem(item);
                             mails.remove(event.getRawSlot());
-                            player.sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.GREEN + "成功领取物品!");
+                            player.sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.GREEN + "成功領取物品!");
 
                             // 保存玩家信箱数据
                             mailboxManager.getDataManager().savePlayerMailbox(playerUUID, mails);
@@ -115,7 +116,7 @@ public class MailboxListener implements Listener {
                                 mailboxManager.openMailboxGUI(player);
                             }, 1L);
                         } else {
-                            player.sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.RED + "您的背包已满，无法领取物品!");
+                            player.sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.RED + "您的背包已滿，無法領取物品!");
                         }
                     }
                 }
@@ -151,7 +152,7 @@ public class MailboxListener implements Listener {
                         // 通知管理员
                         String targetName = Bukkit.getOfflinePlayer(targetUUID).getName();
                         player.sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.GREEN +
-                                "成功从 " + targetName + " 的信箱中删除物品: " + itemName);
+                                "成功從 " + targetName + " 的信箱中刪除物品: " + itemName);
 
                         // 记录到服务器日志
                         mailboxManager.getPlugin().getLogger().info("管理员 " + player.getName() + " 从玩家 " + targetName + " 的信箱中删除了物品: " + itemName);
@@ -170,10 +171,10 @@ public class MailboxListener implements Listener {
 
                             String targetName = Bukkit.getOfflinePlayer(targetUUID).getName();
                             player.sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.GREEN +
-                                    "成功从 " + targetName + " 的信箱中取出物品 (不会从信箱中移除)");
+                                    "成功從 " + targetName + " 的信箱中取出物品 (不會從信箱中移除)");
                         } else {
                             player.sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.RED +
-                                    "您的背包已满，无法取出物品!");
+                                    "您的背包已滿，無法取出物品!");
                         }
                     }
                 }
@@ -230,7 +231,7 @@ public class MailboxListener implements Listener {
         }
 
         if (itemsSent) {
-            player.sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.GREEN + "成功发送物品给所有玩家!");
+            player.sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.GREEN + "成功發送物品給所有玩家!");
             mailboxManager.getPlugin().getLogger().info("管理员 " + player.getName() + " 向所有玩家发送了物品");
         }
     }
@@ -254,7 +255,7 @@ public class MailboxListener implements Listener {
                     Player targetPlayer = Bukkit.getPlayer(targetUUID);
                     if (targetPlayer != null && targetPlayer.isOnline()) {
                         targetPlayer.sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.GREEN +
-                                "您收到了管理员发送的物品! 请使用 /mail box 查看您的信箱。");
+                                "您收到了管理員發送的物品! 請使用 /mail box 查看您的信箱。");
                     }
 
                     // 记录到服务器日志
@@ -266,7 +267,7 @@ public class MailboxListener implements Listener {
 
             if (sentToTarget) {
                 player.sendMessage(ChatColor.GOLD + "[信箱系统] " + ChatColor.GREEN +
-                        "成功发送物品给玩家 " + targetName + "!");
+                        "成功發送物品給玩家 " + targetName + "!");
             }
 
             mailboxManager.getTargetPlayers().remove(playerUUID);

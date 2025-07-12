@@ -1,20 +1,24 @@
 # MailboxPlugin 配置文件
 
-# 数据存储配置
+# 數據存儲配置
 storage:
-  # 存储类型: file 或 mysql
+  # 存儲類型: file 或 mysql
   type: "mysql"
 
-# MySQL 数据库配置
+# MySQL 數據庫配置
 mysql:
-  # 数据库连接信息
+  # 數據庫連接信息
   host: "localhost"
   port: 3306
   database: "minecraft"
   username: "root"
   password: "password"
 
-  # 连接池配置
+  connection-params:
+    allowPublicKeyRetrieval: true
+    useSSL: false
+    serverTimezone: "UTC"
+  # 連接池配置
   connection-pool:
     maximum-pool-size: 10
     minimum-idle: 2
@@ -22,37 +26,37 @@ mysql:
     idle-timeout: 600000
     max-lifetime: 1800000
 
-  # 数据库表前缀
+  # 數據庫表前綴
   table-prefix: "mailbox_"
 
-  # SSL连接 (如果需要)
+  # SSL連接 (如果需要)
   use-ssl: false
 
-# 文件存储配置 (当 storage.type 为 file 时使用)
+# 文件存儲配置 (當 storage.type 為 file 時使用)
 file:
-  # 数据文件夹名称
+  # 數據文件夾名稱
   folder-name: "mailboxes"
 
-# 信箱系统配置
+# 信箱系統配置
 mailbox:
-  # 自动保存间隔 (分钟)
+  # 自動保存間隔 (分鐘)
   auto-save-interval: 5
 
-  # 每个玩家最大邮件数量
+  # 每個玩家最大郵件數量
   max-mails-per-player: 100
 
-  # 邮件保存天数 (超过天数自动删除，-1 表示永不删除)
+  # 郵件保存天數 (超過天數自動刪除，-1 表示永不刪除)
   mail-expire-days: 30
 
-  # 通知设置
+  # 通知設置
   notifications:
-    # 玩家登录时是否通知未读邮件
+    # 玩家登錄時是否通知未讀郵件
     notify-on-join: true
 
-    # 通知延迟时间 (tick，20tick = 1秒)
+    # 通知延遲時間 (tick，20tick = 1秒)
     notification-delay: 40
 
-# 权限设置
+# 權限設置
 permissions:
-  # 普通玩家每次最多可以发送的邮件数量
+  # 普通玩家每次最多可以發送的郵件數量
   max-send-per-operation: 64
