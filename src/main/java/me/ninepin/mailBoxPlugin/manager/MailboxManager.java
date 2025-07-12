@@ -1,13 +1,14 @@
 package me.ninepin.mailBoxPlugin.manager;
 
+import me.ninepin.mailBoxPlugin.database.MySQLDataManager;
+import me.ninepin.mailBoxPlugin.enums.MailboxType;
+import me.ninepin.mailBoxPlugin.model.MailItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import me.ninepin.mailBoxPlugin.model.MailItem;
-import me.ninepin.mailBoxPlugin.enums.MailboxType;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -19,7 +20,7 @@ import java.util.*;
 public class MailboxManager {
 
     private final JavaPlugin plugin;
-    private final DataManager dataManager;
+    private final IDataManager dataManager;
     private final GuiManager guiManager;
 
     private Map<UUID, List<MailItem>> playerMailboxes = new HashMap<>();
@@ -29,19 +30,30 @@ public class MailboxManager {
 
     /**
      * 构造函数
+     *
      * @param plugin 插件实例
      */
     public MailboxManager(JavaPlugin plugin) {
         this.plugin = plugin;
-        this.dataManager = new DataManager(plugin);
+        String storageType = plugin.getConfig().getString("storage.type", "file");
+        if ("mysql".equalsIgnoreCase(storageType)) {
+            this.dataManager = new MySQLDataManager(plugin);
+        } else {
+            this.dataManager = new DataManager(plugin);
+        }
+
+        // 初始化資料管理器
+        this.dataManager.initialize();
+
         this.guiManager = new GuiManager(this, dateFormat);
 
-        // 加载所有玩家的信箱数据
+        // 加載所有玩家的信箱數據
         this.playerMailboxes = dataManager.loadAllMailboxes();
     }
 
     /**
      * 获取未读邮件数量
+     *
      * @param playerUUID 玩家UUID
      * @return 未读邮件数量
      */
@@ -58,8 +70,9 @@ public class MailboxManager {
 
     /**
      * 添加邮件到玩家信箱
+     *
      * @param playerUUID 玩家UUID
-     * @param item 物品
+     * @param item       物品
      */
     public void addMailToPlayer(UUID playerUUID, ItemStack item) {
         List<MailItem> mails = playerMailboxes.getOrDefault(playerUUID, new ArrayList<>());
@@ -79,8 +92,9 @@ public class MailboxManager {
 
     /**
      * 处理来自命令或其他插件的物品发送
+     *
      * @param targetPlayer 目标玩家
-     * @param item 物品
+     * @param item         物品
      */
     public void handleItemFromCommand(Player targetPlayer, ItemStack item) {
         addMailToPlayer(targetPlayer.getUniqueId(), item);
@@ -93,8 +107,9 @@ public class MailboxManager {
 
     /**
      * 处理物品无法放入背包时自动放入信箱
+     *
      * @param player 玩家
-     * @param item 物品
+     * @param item   物品
      */
     public void handleItemToMailbox(Player player, ItemStack item) {
         if (item != null && item.getType() != org.bukkit.Material.AIR) {
@@ -106,6 +121,7 @@ public class MailboxManager {
 
     /**
      * 加载玩家信箱数据
+     *
      * @param playerUUID 玩家UUID
      */
     public void loadPlayerMailbox(UUID playerUUID) {
@@ -124,7 +140,8 @@ public class MailboxManager {
 
     /**
      * 在控制台显示玩家信箱内容
-     * @param sender 命令发送者
+     *
+     * @param sender     命令发送者
      * @param targetUUID 目标玩家UUID
      * @param targetName 目标玩家名称
      */
@@ -181,7 +198,7 @@ public class MailboxManager {
         return targetPlayers;
     }
 
-    public DataManager getDataManager() {
+    public IDataManager getDataManager() {
         return dataManager;
     }
 

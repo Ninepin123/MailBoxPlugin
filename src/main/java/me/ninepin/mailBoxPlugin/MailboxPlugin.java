@@ -42,8 +42,9 @@ public class MailboxPlugin extends JavaPlugin {
         // 保存所有玩家的信箱数据
         if (mailboxManager != null) {
             mailboxManager.saveAllMailboxes();
+            mailboxManager.getDataManager().close();
         }
-        getLogger().info("信箱系统插件已停用!");
+        getLogger().info("信箱系統插件已停用!");
     }
 
     /**

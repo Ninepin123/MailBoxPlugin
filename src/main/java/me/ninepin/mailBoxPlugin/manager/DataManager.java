@@ -1,10 +1,10 @@
 package me.ninepin.mailBoxPlugin.manager;
 
+import me.ninepin.mailBoxPlugin.model.MailItem;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import me.ninepin.mailBoxPlugin.model.MailItem;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,13 +14,14 @@ import java.util.*;
  * 数据管理类
  * 负责邮件数据的保存和加载
  */
-public class DataManager {
+public class DataManager implements IDataManager {
 
     private final JavaPlugin plugin;
     private final File dataFolder;
 
     /**
      * 构造函数
+     *
      * @param plugin 插件实例
      */
     public DataManager(JavaPlugin plugin) {
@@ -35,8 +36,10 @@ public class DataManager {
 
     /**
      * 加载所有玩家的信箱数据
+     *
      * @return 包含所有玩家信箱数据的Map
      */
+    @Override
     public Map<UUID, List<MailItem>> loadAllMailboxes() {
         Map<UUID, List<MailItem>> playerMailboxes = new HashMap<>();
 
@@ -60,9 +63,11 @@ public class DataManager {
 
     /**
      * 加载指定玩家的信箱数据
+     *
      * @param playerUUID 玩家UUID
      * @return 玩家的邮件列表
      */
+    @Override
     public List<MailItem> loadPlayerMailbox(UUID playerUUID) {
         File playerFile = new File(dataFolder, playerUUID.toString() + ".yml");
         List<MailItem> mailItems = new ArrayList<>();
@@ -90,9 +95,11 @@ public class DataManager {
 
     /**
      * 保存指定玩家的信箱数据
+     *
      * @param playerUUID 玩家UUID
-     * @param mailItems 邮件列表
+     * @param mailItems  邮件列表
      */
+    @Override
     public void savePlayerMailbox(UUID playerUUID, List<MailItem> mailItems) {
         File playerFile = new File(dataFolder, playerUUID.toString() + ".yml");
         FileConfiguration config = new YamlConfiguration();
@@ -120,11 +127,23 @@ public class DataManager {
 
     /**
      * 保存所有玩家的信箱数据
+     *
      * @param playerMailboxes 所有玩家的信箱数据
      */
+    @Override
     public void saveAllMailboxes(Map<UUID, List<MailItem>> playerMailboxes) {
         for (Map.Entry<UUID, List<MailItem>> entry : playerMailboxes.entrySet()) {
             savePlayerMailbox(entry.getKey(), entry.getValue());
         }
+    }
+
+    @Override
+    public void initialize() {
+        // 檔案儲存不需要初始化
+    }
+
+    @Override
+    public void close() {
+        // 檔案儲存不需要關閉
     }
 }

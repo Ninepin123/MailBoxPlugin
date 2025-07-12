@@ -1,5 +1,5 @@
 name: MailboxSystem
-version: 1.0
+version: 1.1
 main: me.ninepin.mailBoxPlugin.MailboxPlugin
 api-version: 1.16
 description: 一個提供信箱功能的插件
