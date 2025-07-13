@@ -16,6 +16,9 @@ permissions:
   mailbox.use:
     description: 允許使用基本信箱功能
     default: true
+  mailbox.give:
+    description: 使用給予功能
+    default: true
   mailbox.admin:
     description: 允許使用管理員功能
     default: op

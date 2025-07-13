@@ -1,5 +1,6 @@
 package me.ninepin.mailBoxPlugin.command;
 
+import me.ninepin.mailBoxPlugin.manager.MailboxManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -8,7 +9,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import me.ninepin.mailBoxPlugin.manager.MailboxManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +25,7 @@ public class MailCommand implements CommandExecutor, TabCompleter {
 
     /**
      * 构造函数
+     *
      * @param mailboxManager 信箱管理器
      */
     public MailCommand(MailboxManager mailboxManager) {
@@ -104,7 +105,7 @@ public class MailCommand implements CommandExecutor, TabCompleter {
         }
 
         Player player = (Player) sender;
-        if (!player.hasPermission("mailbox.admin")) {
+        if (!player.hasPermission("mailbox.give")) {
             player.sendMessage(ChatColor.RED + "您没有权限执行此命令!");
             return true;
         }
@@ -161,6 +162,7 @@ public class MailCommand implements CommandExecutor, TabCompleter {
 
     /**
      * 查找玩家UUID
+     *
      * @param playerName 玩家名称
      * @return 玩家UUID，如果找不到则返回null
      */
@@ -184,6 +186,7 @@ public class MailCommand implements CommandExecutor, TabCompleter {
 
     /**
      * 发送帮助信息
+     *
      * @param sender 命令发送者
      */
     private void sendHelpMessage(CommandSender sender) {

@@ -37,6 +37,7 @@ public class MySQLDataManager implements IDataManager {
                 config.getInt("mysql.port", 3306) + "/" +
                 config.getString("mysql.database", "minecraft") +
                 "?useSSL=" + config.getBoolean("mysql.use-ssl", false) +
+                "&allowPublicKeyRetrieval=true" +
                 "&serverTimezone=UTC");
 
         hikariConfig.setUsername(config.getString("mysql.username", "root"));
