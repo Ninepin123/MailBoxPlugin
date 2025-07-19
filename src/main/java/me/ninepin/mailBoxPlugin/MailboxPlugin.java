@@ -1,10 +1,11 @@
 package me.ninepin.mailBoxPlugin;
 
+import me.ninepin.mailBoxPlugin.command.MailCommand;
+import me.ninepin.mailBoxPlugin.expansion.MailboxExpansion;
+import me.ninepin.mailBoxPlugin.listener.MailboxListener;
+import me.ninepin.mailBoxPlugin.manager.MailboxManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import me.ninepin.mailBoxPlugin.manager.MailboxManager;
-import me.ninepin.mailBoxPlugin.command.MailCommand;
-import me.ninepin.mailBoxPlugin.listener.MailboxListener;
 
 /**
  * 信箱系统主插件类
@@ -25,7 +26,10 @@ public class MailboxPlugin extends JavaPlugin {
 
         // 注册命令
         getCommand("mail").setExecutor(new MailCommand(mailboxManager));
-
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new MailboxExpansion(this).register();
+            getLogger().info("成功掛勾到 PlaceholderAPI!");
+        }
         // 设置自动保存定时任务 (每5分钟保存一次)
         new BukkitRunnable() {
             @Override
